@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Admin\SettingController;
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/private', [PageController::class, 'private'])->name('private');
@@ -16,7 +17,7 @@ Route::post('/api/applications', [ApplicationController::class, 'store'])->name(
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::resource('products', ProductController::class);
     Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('settings', [SettingController::class, 'update'])->name('settings.update');
